@@ -14,18 +14,21 @@ export type NotesType = {
 }
 
 export async function loader() {
-  let notes =  await getStoredNotes();
+  let notes = await getStoredNotes();
   return json(notes);
 }
 
 export default function Notes() {
+
   const data = useLoaderData<typeof loader>();
+  
   return (
     <main>
       <NewNote/>
       <NotesList notes={data}/>
     </main>
   );
+  
 }
 
 

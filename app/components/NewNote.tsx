@@ -1,9 +1,10 @@
 import styles from './NewNote.css';
 import  type {LinksFunction} from "@remix-run/node";
+import {Form} from "@remix-run/react";
 
 export default function NewNote() {
   return (
-    <form method="post" id="note-form">
+    <Form method="post" id="note-form">
       <p>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" required />
@@ -15,7 +16,7 @@ export default function NewNote() {
       <div className="form-actions">
         <button>Add Note</button>
       </div>
-    </form>
+    </Form>
   );
 }
 
