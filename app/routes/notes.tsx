@@ -1,11 +1,23 @@
 import React from 'react';
+import NewNote, {links as newNoteLinks} from "~/components/NewNote";
+import type {ActionFunctionArgs} from "@remix-run/node";
 
-function Notes() {
+export default function Notes() {
   return (
-    <div>
-      <h1>Demo Page</h1>
-    </div>
+    <main>
+      <NewNote/>
+    </main>
   );
 }
 
-export default Notes;
+export const action = async ({params, request,}: ActionFunctionArgs) => {
+
+  const formData = await request.formData();
+  
+
+}
+
+export function links() {
+  return [...newNoteLinks()];
+}
+
