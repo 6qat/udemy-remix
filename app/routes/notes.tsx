@@ -1,16 +1,33 @@
 import React from 'react';
 import NewNote, {links as newNoteLinks} from "~/components/NewNote";
+import NotesList, {links as noteListLinks} from "~/components/NoteList";
 import type {ActionFunctionArgs} from "@remix-run/node";
+import {json, redirect} from "@remix-run/node";
 import {getStoredNotes, storeNotes} from "~/data/notes";
-import {redirect} from "@remix-run/node";
+import {useLoaderData} from "@remix-run/react";
+
+
+export type NotesType = {
+  id: Date;
+  title: string;
+  content: string;
+}
+
+export async function loader() {
+  let notes =  await getStoredNotes();
+  return json(notes);
+}
 
 export default function Notes() {
+  const data = useLoaderData<typeof loader>();
   return (
     <main>
       <NewNote/>
+      <NotesList notes={data}/>
     </main>
   );
 }
+
 
 export async function action({params, request,}: ActionFunctionArgs) {
 
@@ -25,6 +42,6 @@ export async function action({params, request,}: ActionFunctionArgs) {
 }
 
 export function links() {
-  return [...newNoteLinks()];
+  return [...newNoteLinks(), ...noteListLinks()];
 }
 
