@@ -1,6 +1,8 @@
 import React from 'react';
 import NewNote, {links as newNoteLinks} from "~/components/NewNote";
 import type {ActionFunctionArgs} from "@remix-run/node";
+import {getStoredNotes, storeNotes} from "~/data/notes";
+import {redirect} from "@remix-run/node";
 
 export default function Notes() {
   return (
@@ -10,11 +12,16 @@ export default function Notes() {
   );
 }
 
-export const action = async ({params, request,}: ActionFunctionArgs) => {
+export async function action({params, request,}: ActionFunctionArgs) {
 
-  const formData = await request.formData();
-  
-
+  const formData: FormData = await request.formData();
+  const noteData = Object.fromEntries(formData);
+  console.log(noteData);
+  const existingNotes = await getStoredNotes();
+  noteData.id = new Date().toISOString();
+  const updatedNotes = existingNotes.concat(noteData);
+  await storeNotes(updatedNotes);
+  return redirect("/notes");
 }
 
 export function links() {
